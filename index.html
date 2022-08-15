@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TA - Unang Warsodi</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="flex bg-[#6A6E7F] w-full text-white h-auto px-[60px] py-6 gap-x-4 items-center justify-between">
+            <figure class="flex w-[250px] items-center gap-x-4">
+                <img 
+                src="https://www.pngall.com/wp-content/uploads/13/Movie-Hollywood-PNG-Free-Image.png"
+                class="w-[50px]" 
+                alt="">
+                <figcaption>Film DB</figcaption>
+            </figure>
+            <nav class="hidden gap-x-4 w-full justify-between md:flex">
+                <section class="flex gap-x-4">
+                    <a href="#" @click="showForm = false"><span>Home</span></a>
+                    <a href="#" @click="showForm = true"><span>Tambah Film</span></a>
+                </section>
+            </nav>
+        </header>
+        <div v-if="!showForm" class="text-right mt-10 mr-10">
+            <button type="button" @click="showForm = true" class="item-right text-white text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Tambah Film</button>
+        </div>
+        <div v-if="!showForm" class="overflow-x-auto relative shadow-md sm:rounded-lg mt-2 mb-10 mr-10 ml-10">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-white uppercase bg-[#6A6E7F] dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="py-3 px-6">
+                            Judul
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Tahun
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Genre
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Krew
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Negara
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Sinopsis
+                        </th>
+                        <th scope="col" class="py-3 px-6">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody v-for="(item, index) in film.list" :key="index">
+                    <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                        <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ item.judul }}
+                        </th>
+                        <td class="py-4 px-6">
+                            {{ item.tahun }}
+                        </td>
+                        <td class="py-4 px-6">
+                            {{ item.genre }}
+                        </td>
+                        <td class="py-4 px-6">
+                            {{ "Direktur : "+item.direktur }}<br>
+                            {{ "Produser : "+item.produser  }}
+                        </td>
+                        <td class="py-4 px-6">
+                            {{ item.negara }}
+                        </td>
+                        <td class="py-4 px-6">
+                            {{ item.sinopsis }}
+                        </td>
+                        <td class="py-4 px-6">
+                            <a href="#" @click="setFilm(item); showForm = true" class="font-medium text-blue-600 dark:text-blue-500 mr-5 hover:underline">Edit</a>
+                            <a href="#" @click="deleteData(item.id)" class="font-medium text-red-600 dark:text-blue-500 hover:underline">Hapus</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="m-10 p-5 bg-gray-200 rounded-lg" v-if="showForm">
+            <form @submit.prevent="film.isUpdate ? updateData() : createData(); showForm = false">
+                <div class="mb-6">
+                  <label for="judul" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Judul</label>
+                  <input v-model="film.judul" type="judul" id="judul" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]" placeholder="Judul film" required>
+                </div>
+                <div class="mb-6">
+                    <label for="genre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Genre</label>
+                    <input v-model="film.genre" type="genre" id="genre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
+                </div>
+                <div class="mb-6">
+                    <label for="direktur" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Direktur</label>
+                    <input v-model="film.direktur" type="direktur" id="direktur" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
+                </div>
+                <div class="mb-6">
+                    <label for="produser" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Produser</label>
+                    <input v-model="film.produser" type="produser" id="produser" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
+                </div>
+                <div class="mb-6">
+                    <label for="negara" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Negara</label>
+                    <input v-model="film.negara" type="negara" id="negara" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
+                </div>
+                <div class="mb-6">
+                    <label for="tahun" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tahun</label>
+                    <input v-model="film.tahun" type="tahun" id="tahun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
+                </div>
+                <div class="mb-6">
+                    <label for="sinopsis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tahun</label>
+                    <textarea v-model="film.sinopsis" id="sinopsis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-grey-500 focus:border-grey-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-grey-500" placeholder="Sinopsis..."></textarea>
+                </div>
+
+                <button type="submit" @click="showForm = false" class="text-white mr-2 bg-gray-400 hover:bg-gray-500 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Kembali</button>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>
+            </form>
+        </div>
+    </div>
+    <script src="./vue.js"></script>
+</body>
+</html>
