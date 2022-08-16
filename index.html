@@ -21,7 +21,7 @@
             </figure>
             <nav class="hidden gap-x-4 w-full justify-between md:flex">
                 <section class="flex gap-x-4">
-                    <a href="#" @click="showForm = false"><span>Home</span></a>
+                    <a href="#" @click="showForm = false"><span>Dashboard</span></a>
                     <a href="#" @click="showForm = true"><span>Tambah Film</span></a>
                 </section>
             </nav>
@@ -113,7 +113,7 @@
                     <input v-model="film.tahun" type="tahun" id="tahun" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-[#6A6E7F] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-[#6A6E7F]">
                 </div>
                 <div class="mb-6">
-                    <label for="sinopsis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tahun</label>
+                    <label for="sinopsis" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Sinopsis</label>
                     <textarea v-model="film.sinopsis" id="sinopsis" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-grey-500 focus:border-grey-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-grey-500 dark:focus:border-grey-500" placeholder="Sinopsis..."></textarea>
                 </div>
 
@@ -122,6 +122,6 @@
             </form>
         </div>
     </div>
-    <script src="./vue.js"></script>
+    <script src="./index.js"></script>
 </body>
 </html>

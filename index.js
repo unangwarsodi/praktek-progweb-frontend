@@ -40,18 +40,6 @@ const app = createApp({
             film.value.isUpdate = false;
         };
 
-        const getCurrentData = (item) => {
-            film.value.isUpdate = true;
-            film.value.id = item.id;
-            film.value.judul = item.judul;
-            film.value.sinopsis = item.sinopsis;
-            film.value.genre = item.genre;
-            film.value.direktur = item.direktur;
-            film.value.produser = item.produser;
-            film.value.negara = item.negara;
-            film.value.tahun = item.tahun;
-        }
-
         const createData = async () => {
             await axios.post(url+"/film/create", 
             {
@@ -116,7 +104,6 @@ const app = createApp({
             film,
             updateData,
             createData,
-            getCurrentData,
             deleteData,
             setFilm,
         };
